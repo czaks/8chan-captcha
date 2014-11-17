@@ -69,11 +69,16 @@ case "check":
   if (!$ary) {
     echo "0";
   }
-  else if ($ary[0]['text'] !== $_GET['text']) {
-    echo "0";
-  }
   else {
-    echo "1";
+    $query = $pdo->prepare("DELETE FROM `captchas` WHERE `cookie` = ? AND `extra` = ?");
+    $query->execute([$_GET['cookie'], $_GET['extra']]);
+
+    if ($ary[0]['text'] !== $_GET['text']) {
+      echo "0";
+    }
+    else {
+      echo "1";
+    }
   }
 
   break;
